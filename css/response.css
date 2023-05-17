@@ -1,0 +1,15 @@
+@media (max-width: 500px) {
+   .card {
+      flex: 0 0 49%;
+      min-height: 200px;
+   }
+   body {
+      font-size: 14px;
+   }
+}
+
+@media (max-width: 300px) {
+   body {
+      font-size: 10px;
+   }
+}
