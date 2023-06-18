@@ -9,7 +9,7 @@
    src: url(../fonts/Theater-Atlas-Deco.ttf);
 }
 body {
-   /* height: 100vh; */
+   height: 100vh;
    background-image: url(../img/Fon.jpg);
    background-position: center;
    background-repeat: no-repeat;
@@ -49,6 +49,7 @@ body {
 }
 .card {
    flex: 0 0 24%;
+   height: 100%;
    border-radius: 10px;
    min-height: 300px;
    margin-bottom: 5px;
