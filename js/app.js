@@ -1,40 +1,41 @@
-import timer from "./timer.js"
+import { timer } from "./timer.js"
 
 // Переменные
-let arrImg = ['./img/1.webp','./img/2.webp','./img/3.webp','./img/4.webp']
-let cardsContainer = document.querySelector('.cards')
-let domTime = document.querySelector('.head__timer')
-let gameOverMask = document.querySelector('.game-over')
+const arrImg = ['./img/1.webp','./img/2.webp','./img/3.webp','./img/4.webp']
+const cardsContainer = document.querySelector('.cards')
+const domTime = document.querySelector('.head__timer')
+const gameOverMask = document.querySelector('.game-over')
 
-let intervalId = timer(domTime)
+
+const intervalId = timer(domTime)
 
 // Создание стартового массива для рендера
 function getStartedArr (arr) {
-   let newArr = [...arr, ...arr]
-   return newArr.sort(() => Math.random() - 0.5);
+   return [...arr, ...arr].sort(() => Math.random() - 0.5)
 }
 // Массив для рендера
 let renderArr = getStartedArr(arrImg)
 
 // Рендер карточек на страницу
-function renderCard (arr) {
-   for (let i = 0; i < arr.length; i++) {
+function renderCard () {
+   renderArr.forEach((src, ind) => {
       cardsContainer.innerHTML += `
-      <div id=${i + 1} class="card">
+      <div id=${ind + 1} class="card">
       <div class="card__front">
-         <img class="front-img" src=${arr[i]} alt=${i + 1}>
+         <img class="front-img" src=${src} alt=${ind}>
       </div>
       <div class="card__back">
-         <img class="back-img" src="./img/back.png" alt="">
+         <img id=${ind + 1} class="back-img" src="./img/back.png" data-src=${src} alt="">
       </div>
       </div>
       `
-  }
+   })
+
   // Обработка клика по картам
-  let card = document.querySelectorAll('.card')
-      card.forEach((cardItem) => cardItem.addEventListener('click', clickCard))
+      document.querySelectorAll('.card')
+      .forEach((cardItem) => cardItem.addEventListener('click', clickCard))
 }
-renderCard(renderArr)
+renderCard()
 
 // Массив совпадений
 let arrСoincidence = []
@@ -43,12 +44,15 @@ let arrId = []
 
 // Добавление 2 карточек в массив совпадений
 function clickCard (e) {
-   let currentSrc = e.target.parentNode.parentNode.querySelector('.front-img').getAttribute('src')
-   let idCard = Number(e.target.parentNode.parentNode.id)
-   let front = e.target.parentNode.parentNode.querySelector('.card__front')
-   let back = e.target.parentNode
+   const currentCard = e.target
+   const currentSrc = currentCard.dataset.src
+   const idCard = Number(currentCard.id)
+   const frontItem = currentCard.parentNode.parentNode.querySelector('.card__front')
+   const backItem = currentCard.parentNode
 
-   addClass(front, back)
+
+
+   addClass(frontItem, backItem)
 
    arrСoincidence.push(currentSrc)
    arrId.push(idCard)
@@ -76,9 +80,9 @@ function addClass (front, back) {
 // Удаление карточек, при совпадении и возврат при не совпадении
 function checkValue(array) {
    let result = ''
-   for (let index = 0; index < array.length; index++) {
-      if (array[index] == array[index + 1]){
-            result = array[index]
+   for (let i = 0; i < array.length; i++) {
+      if (array[i] == array[i + 1]){
+            result = array[i]
       } else {
          setTimeout(() => {
             document.querySelectorAll('.card__front').forEach((el) => el.classList.remove('front-revers'))
@@ -99,19 +103,17 @@ function checkValue(array) {
 
 // Игра выиграна
 function gemeVictory (arr) {
-   if (arr.length == 0) {
-      if(confirm('Вы выиграли! Начать заново?')) {
-         reload()
-      } else {
-         clearInterval(intervalId)
-      }
+   if (arr.length === 0) {
+      confirm('Вы выиграли! Начать заново?') 
+      ? reload() 
+      : clearInterval(intervalId)
    }
 }
 
 // Игра проиграна
 function gameOver () {
    setInterval(() => {
-      if (Number(domTime.innerHTML) == 0) {
+      if (Number(domTime.innerHTML) === 0) {
           if(confirm('Вы не успели! Начать заново ?')) {
             reload()
           } else {

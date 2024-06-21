@@ -8,6 +8,7 @@
    font-family: 'Theater Atlas Deco';
    src: url(../fonts/Theater-Atlas-Deco.ttf);
 }
+
 body {
    height: 100vh;
    background-image: url(../img/Fon.jpg);

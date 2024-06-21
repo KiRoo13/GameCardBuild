@@ -1,4 +1,4 @@
-function timer (domElement) {
+export function timer (domElement) {
    let time = {
       second: 20,
       secondMinus: function () {
@@ -6,14 +6,13 @@ function timer (domElement) {
       },
    }
    domElement.innerHTML = time.second
-   let interval = setInterval(() => {
+
+   return setInterval(() => {
       domElement.innerHTML = ''
       domElement.innerHTML = time.secondMinus()
-      if (time.second == 0) {
+      if (time.second === 0) {
          time.second = 20
       }
    }, 1000)
-   return interval
 }
 
-export default timer
